@@ -28,6 +28,10 @@ class LoginForm(FlaskForm):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    dirpath = app.root_path+'/download/'
+    if(os.path.exists(dirpath)):
+        count = len(os.listdir(dirpath))
+
     session = requests.session()
 
     form = LoginForm()
@@ -94,8 +98,12 @@ END:VTIMEZONE
 
                 classes = soup.find_all('tr', class_='odd')
 
-                filename = form.username.data+'.ics'
-                file = open(filename, 'w')
+                if not os.path.exists(dirpath):
+                    os.makedirs(dirpath)
+
+                filepath = dirpath+form.username.data+'.ics'
+
+                file = open(filepath, 'w')
                 file.write(VCALENDAR)
                 for Class in classes:
                     VEVENT = ''
@@ -142,21 +150,24 @@ END:VTIMEZONE
                 file.write('END:VCALENDAR')
                 file.close()
 
+        os.remove('captcha.png')
+        os.remove('captcha_thresholded.png')
+
         if flag:
             # return render_template('result.html', file='result')
-            dirpath = app.root_path
-            return send_from_directory(dirpath, filename, as_attachment=True)
+            dirpath = app.root_path+'/download'
+            return send_from_directory(dirpath, os.path.basename(filepath), as_attachment=True)
             # return 'yes'
         else:
             # return redirect(url_for('index'))
             return '登录失败'
 
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, count=count)
 
 
 @app.route('/result/?<path:filename>')
 def result(filename):
-    #dirpath = os.path.join(app.root_path, '/')
+    # dirpath = os.path.join(app.root_path, '/')
     dirpath = app.root_path
     return send_from_directory(dirpath, filename, as_attachment=True)
 
