@@ -17,11 +17,7 @@ def getCaptcha(session):
 
         response = session.get(captcha_url, params=captcha_data)
 
-        file = open('captcha.png', 'wb')
-        file.write(response.content)
-        file.close()
-
-        im = Image.open('captcha.png')
+        im = Image.open(BytesIO(response.content))
         w, h = im.size
         im = im.resize((w*2, h*2))
         gray = im.convert('L')  # 灰度处理
@@ -34,10 +30,8 @@ def getCaptcha(session):
             else:
                 table.append(1)
         out = gray.point(table, '1')
-        out.save('captcha_thresholded.png')
 
-        th = Image.open('captcha_thresholded.png')
-        code = pytesseract.image_to_string(th)
+        code = pytesseract.image_to_string(out)
 
         code = filter(str.isalnum, code)
         code = ''.join(list(code))

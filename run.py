@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from getCaptcha import getCaptcha
-
+from const import startTime, endTime, weekName, beginDate
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -14,8 +14,6 @@ import os
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'npumd'
-
-beginDate = datetime.date(2019, 9, 9)
 
 
 class LoginForm(FlaskForm):
@@ -59,13 +57,6 @@ def index():
 
             if(outline_res.status_code == 200):
                 flag = True
-                startTime = (None, '083000', '092500', '102500',
-                             '112000', '140000', '145500', '155000', '164500', '190000', '195500', '205000')
-
-                endTime = (None, '091500', '101000', '111000', '120500', '144500',
-                           '154000', '163500', '173000', '194500', '204000', '213500')
-
-                weekName = (None, 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU')
 
                 VCALENDAR = '''BEGIN:VCALENDAR
 VERSION:2.0
@@ -150,9 +141,6 @@ END:VTIMEZONE
                 file.write('END:VCALENDAR')
                 file.close()
 
-        os.remove('captcha.png')
-        os.remove('captcha_thresholded.png')
-
         if flag:
             # return render_template('result.html', file='result')
             dirpath = app.root_path+'/download'
@@ -173,5 +161,4 @@ def result(filename):
 
 
 if __name__ == '__main__':
-
     app.run(debug=True)
