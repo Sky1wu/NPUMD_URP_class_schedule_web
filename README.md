@@ -6,7 +6,7 @@
 
 ## Demo
 
-[课程表](npumd.online)
+[课程表](https://npumd.online)
 
 ## 简介
 
