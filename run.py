@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, Response
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
@@ -40,6 +40,11 @@ class LoginForm(FlaskForm):
     password = PasswordField(u'密码',
                              validators=[DataRequired(message=u'密码不能为空')])
     submit = SubmitField(u'获取课程表')
+
+
+@app.route('/.well-known/acme-challenge/<filename>')
+def well_known(filename):
+    return render_template('.well-known/acme-challenge/' + filename)
 
 
 @app.route('/', methods=['POST', 'GET'])
