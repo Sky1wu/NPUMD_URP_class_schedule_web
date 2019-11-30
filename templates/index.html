@@ -17,7 +17,7 @@
         }
 
         #footer {
-            margin-top: 10%;
+            margin-top: 5%;
         }
     </style>
 </head>
@@ -38,11 +38,13 @@
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.username) }}
                 {{ wtf.form_field(form.password) }}
-                {{ wtf.form_field(form.submit) }}
+                <div style="text-align: center">
+                    {{ wtf.form_field(form.submit) }}
+                </div>
             </form>
         </div>
 
-        <div class="div2" style="position: relative;margin-top:10%">
+        <div style="position: relative;margin-top:5%">
 
             <p><b>Tips:</b> </p>
             <p style="text-indent:1em;">iOS 用户请使用 Safari 浏览器打开本页面。</p>

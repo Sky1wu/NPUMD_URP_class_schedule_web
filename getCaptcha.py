@@ -5,11 +5,17 @@ from PIL import Image
 from io import BytesIO
 import base64
 import pytesseract
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+url = config['URP'].get('url')
 
 
 def getCaptcha(session):
     for i in range(10):
-        captcha_url = 'http://urp.npumd.cn/validateCodeAction.do'
+        captcha_url = url+'validateCodeAction.do'
 
         captcha_data = {
             'random': random.random()
