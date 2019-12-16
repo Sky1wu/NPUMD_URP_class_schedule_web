@@ -18,6 +18,10 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = config['Flask'].get('SECRET_KEY')
 
+devName = config['contact'].get('devName')
+QQ = config['contact'].get('QQ')
+github = config['contact'].get('github')
+
 url = config['URP'].get('url')
 startYear = config['startDate'].getint('year')
 startMonth = config['startDate'].getint('month')
@@ -179,7 +183,7 @@ def index():
         else:
             return '登录失败'
 
-    return render_template('index.html', form=form, count=count)
+    return render_template('index.html', form=form, count=count, devName=devName, QQ=QQ, github=github)
 
 
 @app.route('/result/?<path:filename>')
